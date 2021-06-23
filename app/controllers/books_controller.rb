@@ -1,6 +1,5 @@
 class BooksController < ApplicationController
-  before_action :set_book, only: %i[ show edit update destroy ]
-  before_action :set_book, only: [:borrow, :returns, :status, :income]
+  before_action :set_book, only: [:show, :edit, :update, :destroy, :borrow, :returns, :status, :income]
   before_action :set_user, only: [:borrow, :returns]
   skip_before_action :verify_authenticity_token, only: [:borrow, :returns]
 
