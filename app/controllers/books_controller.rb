@@ -1,5 +1,8 @@
 class BooksController < ApplicationController
   before_action :set_book, only: %i[ show edit update destroy ]
+  before_action :set_book, only: [:borrow, :returns]
+  before_action :set_user, only: [:borrow, :returns]
+  skip_before_action :verify_authenticity_token, only: [:borrow, :returns]
 
   # GET /books or /books.json
   def index
@@ -56,14 +59,62 @@ class BooksController < ApplicationController
     end
   end
 
+  ##
+  # User try to borrow this book
+  #
+  # POST /books/1/borrow ? user_id = <Target User>
+  def borrow
+    # Check faulty conditions...
+    # Not available copies for a new loan:
+    return render json: { object: 'Book'}, status: :conflict if @book.available == 0
+    # User haven't enougth balance:
+    return render json: { object: 'User'}, status: :conflict if @user.amount - @book.fee < 0
+    loan = Loan.new 
+    loan.book = @book
+    loan.account = @user
+    loan.save # New loan registered
+    render json: { object: 'Loan', id: loan.id }, status: :created
+  end
+
+  ##
+  # User gives back this book
+  #
+  # TODO: Much of the logic must be moved to the model, it's done here by now for easier translate it
+  # to error codes. Should be moved to model and exceptions captured and then translated to error codes.
+  #
+  # POST /books/1/returns ? user_id = <Target User>
+  def returns
+    loan = @book.active_loans.where(:account => @user).first
+    # Loan don't exist:
+    return render json: { object: 'Loan'}, status: :not_found if !loan
+    loan.active = false
+    @user.amount = @user.amount - @book.fee
+    return render json: { object: 'User'}, status: :internal_server_error if @user.amount < 0 # Inconsistence found, missing measures, shouldn't happen
+    loan.save
+    @user.save
+    return render json: { object: 'Loan'}, status: :ok
+  rescue => exception
+    Rails.logger.debug exception
+    return render json: { object: 'Loan'}, status: :internal_server_error # Missing checks...
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_book
       @book = Book.find(params[:id])
+    rescue ActiveRecord::RecordNotFound
+      render json: { object: 'Book'}, status: :not_found
     end
 
     # Only allow a list of trusted parameters through.
     def book_params
       params.require(:book).permit(:title, :fee, :count)
+    end
+
+    # Define user for book loan's actions
+    def set_user
+      @user = Account.find_by_user_id(params[:user_id])
+      # User not found or not defined:
+      render json: { object: 'User'}, status: :not_found if !@user
     end
 end
