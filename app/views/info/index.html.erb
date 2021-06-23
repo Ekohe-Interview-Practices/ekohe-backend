@@ -1,0 +1,28 @@
+<h1>Ekohe Books service API</h1>
+
+<p>You can perform CRUD operations on main info:</p>
+
+<ul>
+    <li><a href="./accounts">Accounts for users</a></li>
+    <li><a href="./books">Books in Library</a></li>
+</ul>
+
+<p>All CRUD operations for books and accounts are published in API but 
+with classic session form authenticity token protection.</p>
+
+<p>See the <strong>Books Management API</strong> methods (fullfilling requirements) on the
+API documentation page. As a summary we have:</p>
+
+<h2>Books</h2>
+
+<ul>
+    <li>POST <code>'/books/(id)/borrow'</code> [form parameter: <code>`user_id`</code>]</li>
+    <li>POST <code>'/books/(id)/returns'</code> [form parameter: <code>`user_id`</code>]</li>
+    <li>GET <code>'/books/(id)/status'</code></li>
+        <li>GET <code>'/books/(id)/income'</code></li>
+</ul>
+
+<h2>Accounts</h2>
+<ul>
+    <li>GET <code>'/accounts/(user_id)/status'</code></li>
+</ul>
