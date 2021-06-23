@@ -1,6 +1,6 @@
 class BooksController < ApplicationController
   before_action :set_book, only: %i[ show edit update destroy ]
-  before_action :set_book, only: [:borrow, :returns]
+  before_action :set_book, only: [:borrow, :returns, :status, :income]
   before_action :set_user, only: [:borrow, :returns]
   skip_before_action :verify_authenticity_token, only: [:borrow, :returns]
 
@@ -96,6 +96,22 @@ class BooksController < ApplicationController
   rescue => exception
     Rails.logger.debug exception
     return render json: { object: 'Loan'}, status: :internal_server_error # Missing checks...
+  end
+
+  # GET /books/1/status
+  def status
+  end
+
+  # GET /books/1/income
+  def income
+    @start_date = params[:start_date]
+    @end_date = params[:end_date]
+    loans = @book.finished_loans.where(updated_at: @start_date.to_date..@end_date.to_date)
+    @income = loans.length * @book.fee
+  # rescue => exception
+  #   return render json: { 
+  #     errors: exception.full_message(highlight: true, order: :top) 
+  #     }, status: :bad_request
   end
 
   private

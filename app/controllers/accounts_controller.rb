@@ -1,5 +1,6 @@
 class AccountsController < ApplicationController
   before_action :set_account, only: %i[ show edit update destroy ]
+  before_action :set_user_account, only: [:status]
 
   # GET /accounts or /accounts.json
   def index
@@ -56,6 +57,10 @@ class AccountsController < ApplicationController
     end
   end
 
+  # 
+  def status
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_account
@@ -65,5 +70,11 @@ class AccountsController < ApplicationController
     # Only allow a list of trusted parameters through.
     def account_params
       params.require(:account).permit(:user_id, :amount)
+    end
+
+    def set_user_account
+      @account = Account.find_by_user_id(params[:id])
+      # User not found or not defined:
+      render json: { object: 'User'}, status: :not_found if !@account
     end
 end

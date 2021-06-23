@@ -10,4 +10,9 @@ class Book < ApplicationRecord
     def active_loans
         self.loans.where('active = true')
     end
+
+    def finished_loans
+        self.loans.where('active = false')
+    end
+
 end
