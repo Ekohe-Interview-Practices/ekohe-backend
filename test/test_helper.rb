@@ -1,6 +1,9 @@
 ENV['RAILS_ENV'] ||= 'test'
 require_relative "../config/environment"
 require "rails/test_help"
+require "exceptions/invalid_loan"
+require "exceptions/low_account_balance"
+require "exceptions/no_book_copies"
 
 class ActiveSupport::TestCase
   # Run tests in parallel with specified workers

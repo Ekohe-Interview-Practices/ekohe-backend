@@ -40,6 +40,7 @@ class AccountsControllerTest < ActionDispatch::IntegrationTest
 
   test "should destroy account" do
     assert_difference('Account.count', -1) do
+      @account.loans.first.destroy while @account.loans.length > 0
       delete account_url(@account)
     end
 

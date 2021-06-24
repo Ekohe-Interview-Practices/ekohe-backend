@@ -63,16 +63,14 @@ class BooksController < ApplicationController
   #
   # POST /books/1/borrow ? user_id = <Target User>
   def borrow
-    # Check faulty conditions...
-    # Not available copies for a new loan:
-    return render json: { object: 'Book'}, status: :conflict if @book.available == 0
-    # User haven't enougth balance:
-    return render json: { object: 'User'}, status: :conflict if @user.amount - @book.fee < 0
-    loan = Loan.new 
-    loan.book = @book
-    loan.account = @user
-    loan.save # New loan registered
+    @book.borrow(@user)
     render json: { object: 'Loan', id: loan.id }, status: :created
+  rescue Exceptions::NoBookCopies
+    # Not available copies for a new loan:
+    render json: { object: 'Book'}, status: :conflict if @book.available == 0
+  rescue Exceptions::LowAccountBalance
+    # User haven't enougth balance:
+    render json: { object: 'User'}, status: :conflict if @user.amount - @book.fee < 0
   end
 
   ##
@@ -83,15 +81,12 @@ class BooksController < ApplicationController
   #
   # POST /books/1/returns ? user_id = <Target User>
   def returns
-    loan = @book.active_loans.where(:account => @user).first
-    # Loan don't exist:
-    return render json: { object: 'Loan'}, status: :not_found if !loan
-    loan.active = false
-    @user.amount = @user.amount - @book.fee
-    return render json: { object: 'User'}, status: :internal_server_error if @user.amount < 0 # Inconsistence found, missing measures, shouldn't happen
-    loan.save
-    @user.save
+    @book.returns(@user)
     return render json: { object: 'Loan'}, status: :ok
+  rescue Exceptions::InvalidLoan
+     render json: { object: 'Loan'}, status: :not_found
+  rescue Exceptions::LowAccountBalance
+    render json: { object: 'User'}, status: :internal_server_error # Inconsistence found, missing measures, shouldn't happen
   rescue => exception
     Rails.logger.debug exception
     return render json: { object: 'Loan'}, status: :internal_server_error # Missing checks...
@@ -105,12 +100,10 @@ class BooksController < ApplicationController
   def income
     @start_date = params[:start_date]
     @end_date = params[:end_date]
-    loans = @book.finished_loans.where(updated_at: @start_date.to_date..@end_date.to_date)
-    @income = loans.length * @book.fee
-  # rescue => exception
-  #   return render json: { 
-  #     errors: exception.full_message(highlight: true, order: :top) 
-  #     }, status: :bad_request
+  rescue => exception
+    return render json: { 
+      errors: exception.full_message(highlight: true, order: :top) 
+    }, status: :bad_request
   end
 
   private

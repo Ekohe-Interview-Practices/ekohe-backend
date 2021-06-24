@@ -8,4 +8,9 @@ class Loan < ApplicationRecord
   def init_fresh
     self.active = true
   end
+
+  def finish
+    self.active = false
+    self.save
+  end
 end
