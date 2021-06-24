@@ -1,6 +1,8 @@
-<h1>Editing Book</h1>
+<%= turbo_frame_tag "main" do %>
+    <h2>Editing Book</h2>
 
-<%= render 'form', book: @book %>
+    <%= render 'form', book: @book %>
 
-<%= link_to 'Show', @book %> |
-<%= link_to 'Back', books_path %>
+    <%= link_to 'Show', @book %> |
+    <%= link_to 'Back', books_path %>
+<% end %>

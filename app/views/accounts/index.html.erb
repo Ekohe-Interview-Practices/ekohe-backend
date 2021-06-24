@@ -1,29 +1,31 @@
-<p id="notice"><%= notice %></p>
+<%= turbo_frame_tag "main" do %>
+  <p id="notice"><%= notice %></p>
 
-<h1>Accounts</h1>
+  <h2>Accounts</h2>
 
-<table>
-  <thead>
-    <tr>
-      <th>User</th>
-      <th>Amount</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @accounts.each do |account| %>
+  <table>
+    <thead>
       <tr>
-        <td><%= account.user_id %></td>
-        <td><%= account.amount %></td>
-        <td><%= link_to 'Show', account %></td>
-        <td><%= link_to 'Edit', edit_account_path(account) %></td>
-        <td><%= link_to 'Destroy', account, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <th>User</th>
+        <th>Amount</th>
+        <th colspan="3"></th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
 
-<br>
+    <tbody>
+      <% @accounts.each do |account| %>
+        <tr>
+          <td><%= account.user_id %></td>
+          <td><%= account.amount %></td>
+          <td><%= link_to 'Show', account %></td>
+          <td><%= link_to 'Edit', edit_account_path(account) %></td>
+          <td><%= link_to 'Destroy', account, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 
-<%= link_to 'New Account', new_account_path %>
+  <br>
+
+  <a href="/">Back</a> | <%= link_to 'New Account', new_account_path %>
+<% end %>

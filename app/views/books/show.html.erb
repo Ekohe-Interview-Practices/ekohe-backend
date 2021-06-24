@@ -1,19 +1,21 @@
-<p id="notice"><%= notice %></p>
+<%= turbo_frame_tag "main" do %>
+  <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Title:</strong>
-  <%= @book.title %>
-</p>
+  <p>
+    <strong>Title:</strong>
+    <%= @book.title %>
+  </p>
 
-<p>
-  <strong>Fee:</strong>
-  <%= @book.fee %>
-</p>
+  <p>
+    <strong>Fee:</strong>
+    <%= @book.fee %>
+  </p>
 
-<p>
-  <strong>Count:</strong>
-  <%= @book.count %>
-</p>
+  <p>
+    <strong>Count:</strong>
+    <%= @book.count %>
+  </p>
 
-<%= link_to 'Edit', edit_book_path(@book) %> |
-<%= link_to 'Back', books_path %>
+  <%= link_to 'Edit', edit_book_path(@book) %> |
+  <%= link_to 'Back', books_path %>
+<% end %>

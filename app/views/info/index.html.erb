@@ -1,28 +1,28 @@
-<h1>Ekohe Books service API</h1>
+<h1><a href="/">Ekohe Books service API</a></h1>
 
 <p>You can perform CRUD operations on main info:</p>
 
 <ul>
-    <li><a href="./accounts">Accounts for users</a></li>
-    <li><a href="./books">Books in Library</a></li>
+    <li><a data-turbo-frame="main" href="./accounts">Accounts for users</a></li>
+    <li><a data-turbo-frame="main" href="./books">Books in Library</a></li>
 </ul>
+<%= turbo_frame_tag "main" do %>
+    <p>See the main <strong>Books Management API</strong> methods on the
+    <a href="https://documenter.getpostman.com/view/16352771/TzecDRBX">API documentation page</a>. 
 
-<p>All CRUD operations for books and accounts are published in API but 
-with classic session form authenticity token protection.</p>
+    As a summary we have:</p>
 
-<p>See the <strong>Books Management API</strong> methods (fullfilling requirements) on the
-API documentation page. As a summary we have:</p>
+    <h2>Books</h2>
 
-<h2>Books</h2>
+    <ul>
+        <li>POST <code>'/books/(id)/borrow'</code> [form parameter: <code>`user_id`</code>]</li>
+        <li>POST <code>'/books/(id)/returns'</code> [form parameter: <code>`user_id`</code>]</li>
+        <li>GET <code>'/books/(id)/status'</code></li>
+            <li>GET <code>'/books/(id)/income'</code></li>
+    </ul>
 
-<ul>
-    <li>POST <code>'/books/(id)/borrow'</code> [form parameter: <code>`user_id`</code>]</li>
-    <li>POST <code>'/books/(id)/returns'</code> [form parameter: <code>`user_id`</code>]</li>
-    <li>GET <code>'/books/(id)/status'</code></li>
-        <li>GET <code>'/books/(id)/income'</code></li>
-</ul>
-
-<h2>Accounts</h2>
-<ul>
-    <li>GET <code>'/accounts/(user_id)/status'</code></li>
-</ul>
+    <h2>Accounts</h2>
+    <ul>
+        <li>GET <code>'/accounts/(user_id)/status'</code></li>
+    </ul>
+<% end %>

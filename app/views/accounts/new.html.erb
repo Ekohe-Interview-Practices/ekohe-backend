@@ -1,5 +1,7 @@
-<h1>New Account</h1>
+<%= turbo_frame_tag "main" do %>
+    <h2>New Account</h2>
 
-<%= render 'form', account: @account %>
+    <%= render 'form', account: @account %>
 
-<%= link_to 'Back', accounts_path %>
+    <%= link_to 'Back', accounts_path %>
+<% end %>

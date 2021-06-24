@@ -1,14 +1,16 @@
-<p id="notice"><%= notice %></p>
+<%= turbo_frame_tag "main" do %>
+  <p id="notice"><%= notice %></p>
+  <h2>Account</h2>
+  <p>
+    <strong>User:</strong>
+    <%= @account.user_id %>
+  </p>
 
-<p>
-  <strong>User:</strong>
-  <%= @account.user_id %>
-</p>
+  <p>
+    <strong>Amount:</strong>
+    <%= @account.amount %>
+  </p>
 
-<p>
-  <strong>Amount:</strong>
-  <%= @account.amount %>
-</p>
-
-<%= link_to 'Edit', edit_account_path(@account) %> |
-<%= link_to 'Back', accounts_path %>
+  <%= link_to 'Edit', edit_account_path(@account) %> |
+  <%= link_to 'Back', accounts_path %>
+<% end %>

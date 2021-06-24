@@ -1,6 +1,8 @@
-<h1>Editing Account</h1>
+<%= turbo_frame_tag "main" do %>
+    <h2>Editing Account</h2>
 
-<%= render 'form', account: @account %>
+    <%= render 'form', account: @account %>
 
-<%= link_to 'Show', @account %> |
-<%= link_to 'Back', accounts_path %>
+    <%= link_to 'Show', @account %> |
+    <%= link_to 'Back', accounts_path %>
+<% end %>
