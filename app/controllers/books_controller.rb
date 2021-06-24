@@ -1,3 +1,6 @@
+require "exceptions/invalid_loan"
+require "exceptions/low_account_balance"
+require "exceptions/no_book_copies"
 class BooksController < ApplicationController
   before_action :set_book, only: [:show, :edit, :update, :destroy, :borrow, :returns, :status, :income]
   before_action :set_user, only: [:borrow, :returns]
@@ -64,7 +67,7 @@ class BooksController < ApplicationController
   # POST /books/1/borrow ? user_id = <Target User>
   def borrow
     @book.borrow(@user)
-    render json: { object: 'Loan', id: loan.id }, status: :created
+    render json: { object: 'Loan' }, status: :created
   rescue Exceptions::NoBookCopies
     # Not available copies for a new loan:
     render json: { object: 'Book'}, status: :conflict if @book.available == 0
