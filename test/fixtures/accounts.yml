@@ -1,9 +1,13 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  user_id: MyString
-  amount: 9.99
+  user_id: google|12
+  amount: 10
 
 two:
-  user_id: MyString
-  amount: 9.99
+  user_id: auth0|2
+  amount: 9
+
+three:
+  user_id: github|33
+  amount: 20

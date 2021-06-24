@@ -40,6 +40,7 @@ class BooksControllerTest < ActionDispatch::IntegrationTest
 
   test "should destroy book" do
     assert_difference('Book.count', -1) do
+      @book.loans.first.destroy while @book.loans.length > 0
       delete book_url(@book)
     end
 

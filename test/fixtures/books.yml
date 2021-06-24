@@ -1,11 +1,22 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  title: MyString
-  fee: 9.99
-  count: 1
+  title: Rails Routing from the Outside In
+  fee: 2.50
+  count: 3
 
 two:
-  title: MyString
-  fee: 9.99
+  title: What is Serverless?
+  fee: 1.5
+  count: 4
+
+three:
+  title: Building Evolutionary Architectures
+  fee: 2
+  count: 5
+  
+ddd:
+  title: Domain Driven Design Distilled
+  fee: 2
   count: 1
+  
